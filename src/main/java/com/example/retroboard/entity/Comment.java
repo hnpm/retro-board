@@ -26,7 +26,7 @@ public class Comment {
     @GeneratedValue
     private Long id;
 
-    private String comment;
+    private String text;
 
     @Enumerated(EnumType.STRING)
     private CommentType type;

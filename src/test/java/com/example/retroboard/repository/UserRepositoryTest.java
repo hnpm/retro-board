@@ -1,5 +1,6 @@
 package com.example.retroboard.repository;
 
+import static com.example.retroboard.TestUtils.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -21,10 +22,7 @@ public class UserRepositoryTest {
     @Test
     public void findByUsername_HappyPath_ShouldReturn1User() {
         // Given
-        User user = new User();
-        user.setUsername("hien");
-        user.setPassword("password");
-        user.setRole("USER");
+        User user = createUser();
         testEntityManager.persist(user);
         testEntityManager.flush();
 
@@ -38,10 +36,7 @@ public class UserRepositoryTest {
     @Test
     public void save_HappyPath_ShouldSave1User() {
         // Given
-        User user = new User();
-        user.setUsername("hien");
-        user.setPassword("password");
-        user.setRole("USER");
+        User user = createUser();
 
         // When
         User actual = userRepository.save(user);

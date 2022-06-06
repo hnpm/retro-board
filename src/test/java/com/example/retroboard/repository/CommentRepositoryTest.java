@@ -1,8 +1,8 @@
 package com.example.retroboard.repository;
 
+import static com.example.retroboard.TestUtils.createComment;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -26,10 +26,7 @@ public class CommentRepositoryTest {
     @Test
     public void findByCreatedYearAndMonthAndDay_HappyPath_ShouldReturn1Comment() {
         // Given
-        Comment comment = new Comment();
-        comment.setComment("Test");
-        comment.setType(CommentType.PLUS);
-        comment.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        Comment comment = createComment("Test", CommentType.PLUS);
         testEntityManager.persist(comment);
         testEntityManager.flush();
 
@@ -40,16 +37,13 @@ public class CommentRepositoryTest {
 
         // Then
         assertThat(comments).hasSize(1);
-        assertThat(comments.get(0)).hasFieldOrPropertyWithValue("comment", "Test");
+        assertThat(comments.get(0)).hasFieldOrPropertyWithValue("text", "Test");
     }
 
     @Test
     public void save_HappyPath_ShouldSave1Comment() {
         // Given
-        Comment comment = new Comment();
-        comment.setComment("Test");
-        comment.setType(CommentType.PLUS);
-        comment.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        Comment comment = createComment("Test", CommentType.PLUS);
 
         // When
         Comment saved = commentRepository.save(comment);

@@ -1,19 +1,20 @@
 package com.example.retroboard.service;
 
+import static com.example.retroboard.TestUtils.createComment;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.example.retroboard.entity.Comment;
 import com.example.retroboard.entity.CommentType;
 import com.example.retroboard.repository.CommentRepository;
@@ -24,20 +25,13 @@ public class CommentServiceTest {
     @Mock
     private CommentRepository commentRepository;
 
+    @InjectMocks
     private CommentService commentService;
-
-    @BeforeEach
-    public void init() {
-        commentService = new CommentService(commentRepository);
-    }
 
     @Test
     public void getAllCommentsForToday_HappyPath_ShouldReturn1Comment() {
         // Given
-        Comment comment = new Comment();
-        comment.setComment("Test");
-        comment.setType(CommentType.PLUS);
-        comment.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        Comment comment = createComment("Test", CommentType.PLUS);
         List<Comment> comments = List.of(comment);
         LocalDate now = LocalDate.now();
         when(commentRepository.findByCreatedYearAndMonthAndDay(now.getYear(), now.getMonthValue(), now.getDayOfMonth()))
@@ -55,16 +49,8 @@ public class CommentServiceTest {
     @Test
     public void saveAll_HappyPath_ShouldSave2Comments() {
         // Given
-        Comment comment = new Comment();
-        comment.setComment("Test Plus");
-        comment.setType(CommentType.PLUS);
-        comment.setCreatedBy("hien");
-        comment.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        Comment comment2 = new Comment();
-        comment2.setComment("Test Star");
-        comment2.setType(CommentType.STAR);
-        comment2.setCreatedBy("hien");
-        comment2.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        Comment comment = createComment("Test Plust", CommentType.PLUS);
+        Comment comment2 = createComment("Test Star", CommentType.STAR);
         List<Comment> comments = List.of(comment, comment2);
         when(commentRepository.saveAll(comments)).thenReturn(comments);
 
